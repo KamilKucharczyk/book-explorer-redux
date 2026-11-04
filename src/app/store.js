@@ -10,3 +10,13 @@ export const store = configureStore({
     toRead: toReadReducer,
   },
 });
+
+store.subscribe(() => {
+  const state = store.getState();
+
+  localStorage.setItem("favorites", JSON.stringify(state.favorites));
+
+  localStorage.setItem("toRead", JSON.stringify(state.toRead));
+
+  localStorage.setItem("isLoggedIn", String(state.auth.isLoggedIn));
+});

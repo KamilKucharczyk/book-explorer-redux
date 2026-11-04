@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const toReadInitialState = [];
+const savedToRead = localStorage.getItem("toRead");
+const toReadInitialState = savedToRead ? JSON.parse(savedToRead) : [];
 
 const toReadSlice = createSlice({
   name: "toRead",
