@@ -11,4 +11,5 @@ export const bookSlice = createSlice({
   name: "books",
   initialState,
   reducers: {},
+  extraReducers: {},
 });
