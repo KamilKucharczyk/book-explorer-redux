@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBooks } from "../redux/opreations";
+import { clearBooks } from "../features/books/booksSlice";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +22,7 @@ const Books = () => {
   );
   useEffect(() => {
     if (!search) {
+      dispatch(clearBooks());
       return;
     }
     dispatch(fetchBooks({ search, page, limit }));
