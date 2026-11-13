@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchBooks } from "../../redux/opreations";
 
 const initialState = {
   books: [],
@@ -11,5 +12,22 @@ export const bookSlice = createSlice({
   name: "books",
   initialState,
   reducers: {},
-  extraReducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchBooks.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(fetchBooks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.books = action.payload.books;
+        state.totalResults = action.payload.totalResults;
+      })
+      .addCase(fetchBooks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
+export default bookSlice.reducer;

@@ -1,0 +1,145 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import BookCard from "../components/BookCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks } from "../redux/opreations";
+
+const Books = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const search = searchParams.get("search") || "";
+  const language = searchParams.get("language") || "";
+  const sort = searchParams.get("sort") || "";
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = 10;
+
+  const [inputValue, setInputValue] = useState(search);
+
+  const dispatch = useDispatch();
+  const { books, totalResults, loading, error } = useSelector(
+    (state) => state.books,
+  );
+  useEffect(() => {
+    if (!search) {
+      return;
+    }
+    dispatch(fetchBooks({ search, page, limit }));
+  }, [dispatch, search, page]);
+
+  const filteredBooks = books.filter((book) => {
+    const matchesSelect = language ? book.language?.includes(language) : true;
+    return matchesSelect;
+  });
+
+  const sortedBooks = [...filteredBooks];
+
+  if (sort === "A-Z") {
+    sortedBooks.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sort === "Z-A") {
+    sortedBooks.sort((a, b) => b.title.localeCompare(a.title));
+  } else if (sort === "Oldest") {
+    sortedBooks.sort((a, b) => a.first_publish_year - b.first_publish_year);
+  } else if (sort === "Newest") {
+    sortedBooks.sort((a, b) => b.first_publish_year - a.first_publish_year);
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    setSearchParams({
+      search: inputValue,
+      language,
+      sort,
+      page: 1,
+    });
+  };
+
+  const handleSelect = (e) => {
+    const languageValue = e.target.value;
+    if (languageValue) {
+      setSearchParams({ search, language: languageValue, sort, page: 1 });
+    } else {
+      setSearchParams({ search, sort, page: 1 });
+    }
+  };
+
+  const handleSort = (e) => {
+    const sortValue = e.target.value;
+    if (sortValue) {
+      setSearchParams({ search, language, sort: sortValue, page: 1 });
+    } else {
+      setSearchParams({ search, language, page: 1 });
+    }
+  };
+
+  const totalPages = Math.ceil(totalResults / limit);
+
+  const handlePrev = () => {
+    if (page > 1) {
+      setSearchParams({ search, language, sort, page: page - 1 });
+    }
+  };
+  const handleNext = () => {
+    if (page < totalPages) {
+      setSearchParams({ search, language, sort, page: page + 1 });
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <div>
+      <h1>Books explorer</h1>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          name="search"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="search title"
+        />
+        <select value={language} onChange={handleSelect}>
+          <option value="">All</option>
+          <option value="eng">English</option>
+          <option value="pol">Polish</option>
+          <option value="ger">German</option>
+          <option value="fre">French</option>
+        </select>
+        <select value={sort} onChange={handleSort}>
+          <option value="">Default</option>
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+          <option value="Oldest">Oldest</option>
+          <option value="Newest">Newest</option>
+        </select>
+        <button type="submit">Search</button>
+      </form>
+      {!search && <p>Enter a book title to search</p>}
+      {search && sortedBooks.length === 0 && !error && <p>No books found</p>}
+      {search && (
+        <ul>
+          {sortedBooks.map((sortedBook) => (
+            <li key={sortedBook.key}>
+              <BookCard sortedBook={sortedBook} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {error && <p>{error}</p>}
+      <p>Page: {page}</p>
+      <button type="button" onClick={handlePrev} disabled={page === 1}>
+        Prev
+      </button>
+      <button
+        type="button"
+        onClick={handleNext}
+        disabled={page === totalPages || totalPages === 0}
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+export default Books;
