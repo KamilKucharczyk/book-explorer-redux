@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import favoritesReducer from "../features/favorites/favoritesSlice";
 import toReadReducer from "../features/toRead/toReadSlice";
 import booksReducer from "../features/books/booksSlice";
+import bookDetailsReducer from "../features/books/bookDetailsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     favorites: favoritesReducer,
     toRead: toReadReducer,
     books: booksReducer,
+    bookDetails: bookDetailsReducer,
   },
 });
 
