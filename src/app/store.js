@@ -4,6 +4,7 @@ import favoritesReducer from "../features/favorites/favoritesSlice";
 import toReadReducer from "../features/toRead/toReadSlice";
 import booksReducer from "../features/books/booksSlice";
 import bookDetailsReducer from "../features/books/bookDetailsSlice";
+import profileReducer from "../features/profile/profileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     toRead: toReadReducer,
     books: booksReducer,
     bookDetails: bookDetailsReducer,
+    profile: profileReducer,
   },
 });
 
@@ -23,4 +25,6 @@ store.subscribe(() => {
   localStorage.setItem("toRead", JSON.stringify(state.toRead));
 
   localStorage.setItem("isLoggedIn", String(state.auth.isLoggedIn));
+
+  localStorage.setItem("profile", JSON.stringify(state.profile));
 });
