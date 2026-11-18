@@ -1,41 +1,23 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFavorite } from "../features/favorites/favoritesSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { addToRead } from "../features/toRead/toReadSlice";
+import { fetchBookDetails } from "../redux/opreations";
 
-const API_DETAILS_URL = "https://openlibrary.org/works/";
 const COVER_URL = "https://covers.openlibrary.org/b/id/";
 
 const BookDetails = () => {
-  const [details, setDetails] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const { details, error, loading } = useSelector((state) => state.bookDetails);
+
   useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        setError("");
-        setLoading(true);
-        const response = await fetch(`${API_DETAILS_URL}${id}.json`);
-        if (!response.ok) {
-          throw new Error("Fetch failed");
-        }
-        const data = await response.json();
-        setDetails(data);
-      } catch (err) {
-        console.error(err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDetails();
-  }, [id]);
+    dispatch(fetchBookDetails(id));
+  }, [dispatch, id]);
 
   const handleBack = () => {
     navigate(location.state?.from || "/books");
