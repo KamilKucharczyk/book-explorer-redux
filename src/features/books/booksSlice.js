@@ -36,5 +36,5 @@ export const bookSlice = createSlice({
       });
   },
 });
-export const { clearBooks } = bookSlice.reducer;
+export const { clearBooks } = bookSlice.actions;
 export default bookSlice.reducer;
