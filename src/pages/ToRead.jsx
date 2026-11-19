@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromRead, toggleRead } from "../features/toRead/toReadSlice";
+import {
+  selectAllBooksCount,
+  selectReadBooks,
+  selectReadingProgress,
+  selectToRead,
+  selectUnreadBooks,
+} from "../features/toRead/selectors";
 
 const ToRead = () => {
-  const toRead = useSelector((state) => state.toRead);
   const dispatch = useDispatch();
-
-  const allBooks = toRead.length;
-  const readBooks = toRead.filter((item) => item.read === true).length;
-  const notRead = allBooks - readBooks;
-  let progress = 0;
-  if (allBooks !== 0) {
-    progress = (readBooks / allBooks) * 100;
-  }
+  const toRead = useSelector(selectToRead);
+  const unreadBooks = useSelector(selectUnreadBooks);
+  const readBooks = useSelector(selectReadBooks);
+  const progress = useSelector(selectReadingProgress);
+  const allBooks = useSelector(selectAllBooksCount);
 
   const handleToggle = (key) => {
     dispatch(toggleRead(key));
@@ -37,7 +40,7 @@ const ToRead = () => {
       </ul>
       <p>All books: {allBooks}</p>
       <p>Read: {readBooks}</p>
-      <p>Not read: {notRead}</p>
+      <p>Not read: {unreadBooks}</p>
       <p>Progress: {Math.round(progress)} %</p>
     </div>
   );
