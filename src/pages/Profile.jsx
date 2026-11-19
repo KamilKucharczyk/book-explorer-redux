@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import useForm from "../hooks/useForm";
 import { saveProfile } from "../features/profile/profileSlice";
+import { selectProfile } from "../features/profile/selectors";
 
 const Profile = () => {
   const dispatch = useDispatch();
 
-  const profile = useSelector((state) => state.profile);
+  const profile = useSelector(selectProfile);
   const initialValues = profile;
 
   const validate = (values) => {

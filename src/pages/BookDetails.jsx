@@ -4,6 +4,11 @@ import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { addToRead } from "../features/toRead/toReadSlice";
 import { fetchBookDetails } from "../redux/opreations";
+import {
+  selectBookDetails,
+  selectBookDetailsError,
+  selectBookDetailsLoading,
+} from "../features/books/selectors";
 
 const COVER_URL = "https://covers.openlibrary.org/b/id/";
 
@@ -13,7 +18,9 @@ const BookDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { details, error, loading } = useSelector((state) => state.bookDetails);
+  const details = useSelector(selectBookDetails);
+  const error = useSelector(selectBookDetailsError);
+  const loading = useSelector(selectBookDetailsLoading);
 
   useEffect(() => {
     dispatch(fetchBookDetails(id));

@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { selectIsLoggedIn } from "../features/auth/selectors";
 
 const ProtectedRoute = ({ children }) => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return isLoggedIn ? children : <Navigate to="/login" />;
 };

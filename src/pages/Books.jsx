@@ -4,6 +4,12 @@ import BookCard from "../components/BookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBooks } from "../redux/opreations";
 import { clearBooks } from "../features/books/booksSlice";
+import {
+  selectBooks,
+  selectBooksError,
+  selectBooksLoading,
+  selectBooksTotalResults,
+} from "../features/books/selectors";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,9 +23,11 @@ const Books = () => {
   const [inputValue, setInputValue] = useState(search);
 
   const dispatch = useDispatch();
-  const { books, totalResults, loading, error } = useSelector(
-    (state) => state.books,
-  );
+  const books = useSelector(selectBooks);
+  const totalResults = useSelector(selectBooksTotalResults);
+  const loading = useSelector(selectBooksLoading);
+  const error = useSelector(selectBooksError);
+
   useEffect(() => {
     if (!search) {
       dispatch(clearBooks());
@@ -27,6 +35,10 @@ const Books = () => {
     }
     dispatch(fetchBooks({ search, page, limit }));
   }, [dispatch, search, page]);
+
+  useEffect(() => {
+    setInputValue(search);
+  }, [search]);
 
   const filteredBooks = books.filter((book) => {
     const matchesSelect = language ? book.language?.includes(language) : true;

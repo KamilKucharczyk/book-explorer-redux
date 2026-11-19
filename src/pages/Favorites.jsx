@@ -1,11 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFavorite } from "../features/favorites/favoritesSlice";
+import {
+  selectFavorites,
+  selectFavoritesNumber,
+} from "../features/favorites/selectors";
 
 const Favorites = () => {
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites);
-
+  const favorites = useSelector(selectFavorites);
+  const favoritesNumber = useSelector(selectFavoritesNumber);
   const handleRemove = (key) => {
     dispatch(removeFavorite(key));
   };
@@ -26,7 +30,7 @@ const Favorites = () => {
           );
         })}
       </ul>
-      <p>Favorites: {favorites.length}</p>
+      <p>Favorites: {favoritesNumber}</p>
     </div>
   );
 };
