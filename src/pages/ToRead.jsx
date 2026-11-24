@@ -43,7 +43,7 @@ const ToRead = () => {
               Remove
             </button>
             <select
-              value={item.rating}
+              value={item.rating ?? 0}
               onChange={(e) =>
                 dispatch(
                   setRating({
@@ -61,7 +61,7 @@ const ToRead = () => {
               <option value={5}>5</option>
             </select>
             <textarea
-              value={item.note}
+              value={item.note ?? ""}
               onChange={(e) =>
                 dispatch(
                   setNote({
