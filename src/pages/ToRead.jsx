@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromRead, toggleRead } from "../features/toRead/toReadSlice";
+import {
+  removeFromRead,
+  setNote,
+  setRating,
+  toggleRead,
+} from "../features/toRead/toReadSlice";
 import {
   selectAllBooksCount,
   selectReadBooks,
@@ -35,7 +40,17 @@ const ToRead = () => {
             <button type="button" onClick={() => handleRemove(item.key)}>
               Remove
             </button>
-            <select value={item.rating}>
+            <select
+              value={item.rating}
+              onChange={(e) =>
+                dispatch(
+                  setRating({
+                    key: item.key,
+                    rating: Number(e.target.value),
+                  }),
+                )
+              }
+            >
               <option value={0}>No rating</option>
               <option value={1}>1</option>
               <option value={2}>2</option>
@@ -43,6 +58,18 @@ const ToRead = () => {
               <option value={4}>4</option>
               <option value={5}>5</option>
             </select>
+            <textarea
+              value={item.note}
+              onChange={(e) =>
+                dispatch(
+                  setNote({
+                    key: item.key,
+                    note: e.target.value,
+                  }),
+                )
+              }
+              placeholder="Add note"
+            />
           </li>
         ))}
       </ul>
