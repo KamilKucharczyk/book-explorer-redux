@@ -12,7 +12,7 @@ const toReadSlice = createSlice({
         (book) => book.key === action.payload.key,
       );
       if (!existedToRead) {
-        state.push({ ...action.payload, read: false });
+        state.push({ ...action.payload, read: false, rating: 0, note: "" });
       }
     },
     removeFromRead: (state, action) => {
@@ -24,11 +24,29 @@ const toReadSlice = createSlice({
         book.read = !book.read;
       }
     },
+    setRating: (state, action) => {
+      const book = state.find((book) => book.key === action.payload.key);
+      if (book) {
+        book.rating = action.payload.rating;
+      }
+    },
+    setNote: (state, action) => {
+      const book = state.find((book) => book.key === action.payload.key);
+      if (book) {
+        book.note = action.payload.note;
+      }
+    },
     clearReadList: () => {
       return [];
     },
   },
 });
-export const { addToRead, removeFromRead, toggleRead, clearReadList } =
-  toReadSlice.actions;
+export const {
+  addToRead,
+  removeFromRead,
+  toggleRead,
+  setRating,
+  setNote,
+  clearReadList,
+} = toReadSlice.actions;
 export default toReadSlice.reducer;
