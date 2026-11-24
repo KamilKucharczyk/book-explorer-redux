@@ -19,3 +19,18 @@ export const selectReadingProgress = (state) => {
   }
   return (readBooks / allBooks) * 100;
 };
+
+export const selectAverageRating = (state) => {
+  const toRead = selectToRead(state);
+  const ratedBooks = toRead.filter((item) => item.rating > 0);
+
+  if (ratedBooks.length === 0) {
+    return 0;
+  }
+
+  const totalRating = ratedBooks.reduce(
+    (total, item) => total + item.rating,
+    0,
+  );
+  return totalRating / ratedBooks.length;
+};

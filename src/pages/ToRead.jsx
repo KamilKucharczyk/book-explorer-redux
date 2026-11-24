@@ -7,6 +7,7 @@ import {
 } from "../features/toRead/toReadSlice";
 import {
   selectAllBooksCount,
+  selectAverageRating,
   selectReadBooks,
   selectReadingProgress,
   selectToRead,
@@ -20,6 +21,7 @@ const ToRead = () => {
   const readBooks = useSelector(selectReadBooks);
   const progress = useSelector(selectReadingProgress);
   const allBooks = useSelector(selectAllBooksCount);
+  const averageRating = useSelector(selectAverageRating);
 
   const handleToggle = (key) => {
     dispatch(toggleRead(key));
@@ -77,6 +79,7 @@ const ToRead = () => {
       <p>Read: {readBooks}</p>
       <p>Not read: {unreadBooks}</p>
       <p>Progress: {Math.round(progress)} %</p>
+      <p>Average rating: {averageRating.toFixed(1)}</p>
     </div>
   );
 };
