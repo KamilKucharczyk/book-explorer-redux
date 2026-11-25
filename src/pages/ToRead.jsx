@@ -12,6 +12,8 @@ import {
   selectReadingProgress,
   selectToRead,
   selectUnreadBooks,
+  selectYearlyGoal,
+  selectYearlyGoalProgress,
 } from "../features/toRead/selectors";
 
 const ToRead = () => {
@@ -22,6 +24,8 @@ const ToRead = () => {
   const progress = useSelector(selectReadingProgress);
   const allBooks = useSelector(selectAllBooksCount);
   const averageRating = useSelector(selectAverageRating);
+  const yearlyGoal = useSelector(selectYearlyGoal);
+  const yearlyGoalProgress = useSelector(selectYearlyGoalProgress);
 
   const handleToggle = (key) => {
     dispatch(toggleRead(key));
@@ -80,6 +84,8 @@ const ToRead = () => {
       <p>Not read: {unreadBooks}</p>
       <p>Progress: {Math.round(progress)} %</p>
       <p>Average rating: {averageRating.toFixed(1)}</p>
+      <p>Yearly goal: {yearlyGoal}</p>
+      <p>Goal progress: {Math.round(yearlyGoalProgress)} %</p>
     </div>
   );
 };

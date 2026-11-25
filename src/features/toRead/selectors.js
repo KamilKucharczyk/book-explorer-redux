@@ -34,3 +34,14 @@ export const selectAverageRating = (state) => {
   );
   return totalRating / ratedBooks.length;
 };
+
+export const selectYearlyGoal = (state) => Number(state.profile.yearlyGoal);
+
+export const selectYearlyGoalProgress = (state) => {
+  const readBooks = selectReadBooks(state);
+  const yearlyGoal = selectYearlyGoal(state);
+  if (!yearlyGoal || yearlyGoal <= 0) {
+    return 0;
+  }
+  return (readBooks / yearlyGoal) * 100;
+};
