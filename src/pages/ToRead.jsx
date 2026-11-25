@@ -84,7 +84,7 @@ const ToRead = () => {
       <p>Not read: {unreadBooks}</p>
       <p>Progress: {Math.round(progress)} %</p>
       <p>Average rating: {averageRating.toFixed(1)}</p>
-      <p>Yearly goal: {yearlyGoal}</p>
+      <p>Yearly goal: {readBooks / yearlyGoal}</p>
       <p>Goal progress: {Math.round(yearlyGoalProgress)} %</p>
     </div>
   );

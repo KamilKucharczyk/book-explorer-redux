@@ -35,7 +35,8 @@ export const selectAverageRating = (state) => {
   return totalRating / ratedBooks.length;
 };
 
-export const selectYearlyGoal = (state) => Number(state.profile.yearlyGoal);
+export const selectYearlyGoal = (state) =>
+  Number(state.profile.yearlyGoal) || 0;
 
 export const selectYearlyGoalProgress = (state) => {
   const readBooks = selectReadBooks(state);
